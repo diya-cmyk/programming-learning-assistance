@@ -1,0 +1,37 @@
+name: programming_assistant
+description: AI Programming Learning Assistant
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # AI & HTTP
+  http: ^1.2.2
+  google_generative_ai: ^0.4.0
+
+  # State Management
+  provider: ^6.1.1
+
+  # Code Editor
+  flutter_code_editor: ^0.3.1
+  highlight: ^0.7.0
+
+  # UI
+  flutter_markdown: ^0.6.18
+  lottie: ^3.0.0
+
+  # Storage
+  shared_preferences: ^2.2.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/markdown/
