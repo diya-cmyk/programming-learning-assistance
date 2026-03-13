@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 enum AIMode { chat, explain, debug, generate }
 
 class AIService {
-  static const String _apiKey = "Your Key";
+  static const String _apiKey = "AIzaSyAtqcgP61pH1LidF-khxKAJ3YjUQlpD9xg";
 
   static const String _baseUrl =
       "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";

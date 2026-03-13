@@ -12,6 +12,7 @@ class VisualizerScreen extends StatefulWidget {
 }
 
 class _VisualizerScreenState extends State<VisualizerScreen> {
+
   List<int> _array = [64, 34, 25, 12, 22, 11, 90];
 
   int _comparingI = -1;
@@ -47,10 +48,9 @@ class _VisualizerScreenState extends State<VisualizerScreen> {
 
   void _generateRandomArray() {
     final rand = Random();
-    final newArray = List.generate(8, (_) => rand.nextInt(100) + 10);
 
     setState(() {
-      _array = newArray;
+      _array = List.generate(8, (_) => rand.nextInt(90) + 10);
       _statusText = "Random array generated";
     });
   }
@@ -62,6 +62,7 @@ class _VisualizerScreenState extends State<VisualizerScreen> {
 
     for (int i = 0; i < arr.length - 1; i++) {
       for (int j = 0; j < arr.length - i - 1; j++) {
+
         setState(() {
           _comparingI = j;
           _comparingJ = j + 1;
@@ -71,6 +72,7 @@ class _VisualizerScreenState extends State<VisualizerScreen> {
         await Future.delayed(Duration(milliseconds: _speed));
 
         if (arr[j] > arr[j + 1]) {
+
           int temp = arr[j];
           arr[j] = arr[j + 1];
           arr[j + 1] = temp;
@@ -101,9 +103,11 @@ class _VisualizerScreenState extends State<VisualizerScreen> {
     final arr = List<int>.from(_array);
 
     for (int i = 0; i < arr.length - 1; i++) {
+
       int minIndex = i;
 
       for (int j = i + 1; j < arr.length; j++) {
+
         setState(() {
           _comparingI = minIndex;
           _comparingJ = j;
@@ -137,10 +141,12 @@ class _VisualizerScreenState extends State<VisualizerScreen> {
     final arr = List<int>.from(_array);
 
     for (int i = 1; i < arr.length; i++) {
+
       int key = arr[i];
       int j = i - 1;
 
       while (j >= 0 && arr[j] > key) {
+
         setState(() {
           _comparingI = j;
           _comparingJ = j + 1;
@@ -175,7 +181,7 @@ class _VisualizerScreenState extends State<VisualizerScreen> {
       _startBubbleSort();
     } else if (_selectedAlgorithm == "Selection Sort") {
       _startSelectionSort();
-    } else if (_selectedAlgorithm == "Insertion Sort") {
+    } else {
       _startInsertionSort();
     }
   }
@@ -183,150 +189,184 @@ class _VisualizerScreenState extends State<VisualizerScreen> {
   void _reset() {
     setState(() {
       _array = [64, 34, 25, 12, 22, 11, 90];
-
       _comparingI = -1;
       _comparingJ = -1;
-
       _statusText = "Press Start to visualize sorting";
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final maxVal = _array.reduce(max);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("Algorithm Visualizer"),
       ),
-      body: Column(
-        children: [
-          const SizedBox(height: 10),
-          Text(
-            _statusText,
-            style: const TextStyle(
-              fontSize: 16,
-              color: CyberpunkTheme.primary,
-            ),
-          ),
-          const SizedBox(height: 10),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _arrayController,
-                    decoration: const InputDecoration(
-                      hintText: "Enter array: 10,5,3,8",
-                    ),
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.check),
-                  onPressed: _setCustomArray,
-                ),
-                IconButton(
-                  icon: const Icon(Icons.shuffle),
-                  onPressed: _generateRandomArray,
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 10),
-          DropdownButton<String>(
-            value: _selectedAlgorithm,
-            items: const [
-              DropdownMenuItem(
-                  value: "Bubble Sort", child: Text("Bubble Sort")),
-              DropdownMenuItem(
-                  value: "Selection Sort", child: Text("Selection Sort")),
-              DropdownMenuItem(
-                  value: "Insertion Sort", child: Text("Insertion Sort")),
-            ],
-            onChanged: (value) {
-              setState(() {
-                _selectedAlgorithm = value!;
-              });
-            },
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: _array.asMap().entries.map((entry) {
-                  int index = entry.key;
-                  int value = entry.value;
 
-                  Color color = CyberpunkTheme.secondary;
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
 
-                  if (index == _comparingI || index == _comparingJ) {
-                    color = CyberpunkTheme.accent;
-                  }
+              const SizedBox(height: 10),
 
-                  return Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(value.toString()),
-                          const SizedBox(height: 4),
-                          AnimatedContainer(
-                            duration: Duration(milliseconds: _speed ~/ 2),
-                            height: (value / maxVal) * 250,
-                            decoration: BoxDecoration(
-                              color: color,
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                          ),
-                        ],
+              Text(
+                _statusText,
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: CyberpunkTheme.primary,
+                ),
+              ),
+
+              const SizedBox(height: 10),
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  children: [
+
+                    Expanded(
+                      child: TextField(
+                        controller: _arrayController,
+                        decoration: const InputDecoration(
+                          hintText: "Enter array: 10,5,3,8",
+                        ),
                       ),
                     ),
-                  );
-                }).toList(),
+
+                    IconButton(
+                      icon: const Icon(Icons.check),
+                      onPressed: _setCustomArray,
+                    ),
+
+                    IconButton(
+                      icon: const Icon(Icons.shuffle),
+                      onPressed: _generateRandomArray,
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              children: [
-                const Text("Speed"),
-                Expanded(
-                  child: Slider(
-                    value: (1000 - _speed).toDouble(),
-                    min: 0,
-                    max: 900,
-                    onChanged: (v) {
-                      setState(() {
-                        _speed = (1000 - v).toInt();
-                      });
-                    },
+
+              const SizedBox(height: 10),
+
+              DropdownButton<String>(
+                value: _selectedAlgorithm,
+                items: const [
+                  DropdownMenuItem(
+                      value: "Bubble Sort",
+                      child: Text("Bubble Sort")),
+                  DropdownMenuItem(
+                      value: "Selection Sort",
+                      child: Text("Selection Sort")),
+                  DropdownMenuItem(
+                      value: "Insertion Sort",
+                      child: Text("Insertion Sort")),
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    _selectedAlgorithm = value!;
+                  });
+                },
+              ),
+
+              const SizedBox(height: 20),
+
+              /// CHART AREA
+              SizedBox(
+                height: 300,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: _array.asMap().entries.map((entry) {
+
+                      int index = entry.key;
+                      int value = entry.value;
+
+                      Color color = CyberpunkTheme.secondary;
+
+                      if (index == _comparingI || index == _comparingJ) {
+                        color = CyberpunkTheme.accent;
+                      }
+
+                      return Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+
+                              Text(value.toString()),
+
+                              const SizedBox(height: 4),
+
+                              AnimatedContainer(
+                                duration: Duration(milliseconds: _speed ~/ 2),
+                                height: value * 2.5,
+                                decoration: BoxDecoration(
+                                  color: color,
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+
+                    }).toList(),
                   ),
                 ),
-              ],
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton.icon(
-                onPressed: _isRunning ? null : _startSelectedAlgorithm,
-                icon: const Icon(Icons.play_arrow),
-                label: const Text("Start"),
               ),
-              const SizedBox(width: 20),
-              OutlinedButton.icon(
-                onPressed: _isRunning ? null : _reset,
-                icon: const Icon(Icons.refresh),
-                label: const Text("Reset"),
+
+              const SizedBox(height: 20),
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  children: [
+
+                    const Text("Speed"),
+
+                    Expanded(
+                      child: Slider(
+                        value: (1000 - _speed).toDouble(),
+                        min: 0,
+                        max: 900,
+                        onChanged: (v) {
+                          setState(() {
+                            _speed = (1000 - v).toInt();
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+
+                  ElevatedButton.icon(
+                    onPressed: _isRunning ? null : _startSelectedAlgorithm,
+                    icon: const Icon(Icons.play_arrow),
+                    label: const Text("Start"),
+                  ),
+
+                  const SizedBox(width: 20),
+
+                  OutlinedButton.icon(
+                    onPressed: _isRunning ? null : _reset,
+                    icon: const Icon(Icons.refresh),
+                    label: const Text("Reset"),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 30),
             ],
           ),
-          const SizedBox(height: 20),
-        ],
+        ),
       ),
     );
   }
